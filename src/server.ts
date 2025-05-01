@@ -9,7 +9,7 @@ const app = express();
 
 // Enable CORS for Telegram WebApp
 app.use(cors({
-    origin: ['https://tg-nine-orcin.vercel.app', 'https://web.telegram.org'],
+    origin: ['https://telegram-six-blush.vercel.app', 'https://web.telegram.org'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Telegram-Init-Data'],
     credentials: true
