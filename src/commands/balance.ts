@@ -1,6 +1,6 @@
 import { Context } from 'telegraf';
 import { AppDataSource } from '../database';
-import { User } from '../models/User';
+import { User } from '../entities/User';
 import { rewardsService } from '../services/rewards';
 import { logger } from '../utils/logger';
 
