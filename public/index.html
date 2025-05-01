@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TONVault Staking</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://ton.org/tonconnect-web-sdk.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        /* Fallback styles in case the main stylesheet fails to load */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0F172A;
+            color: #F8FAFC;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        .app {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    <div class="app">
+        <!-- User Header -->
+        <header class="user-header">
+            <div class="user-profile">
+                <img id="userAvatar" src="assets/default-avatar.png" alt="User Avatar" class="avatar">
+                <div class="user-details">
+                    <h3 id="userName">Connect Wallet</h3>
+                    <p id="walletAddress" class="wallet-address">0x000...000</p>
+                    <div id="userRank" class="user-rank">
+                        <span class="material-icons">military_tech</span>
+                        <span id="rankText">Novice</span>
+                    </div>
+                </div>
+            </div>
+            <button id="connectWallet" class="connect-btn">
+                <span class="material-icons">account_balance_wallet</span>
+            </button>
+        </header>
+
+        <!-- Balance Bar -->
+        <div class="balance-bar">
+            <div class="balance-info">
+                <img src="assets/ton-logo.svg" alt="TON" class="ton-logo">
+                <div class="balance-amount">
+                    <span id="tonBalance">0.00</span> TON
+                </div>
+            </div>
+            <div class="network-status">
+                <span class="status-dot"></span>
+                <span id="networkName">Mainnet</span>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div id="homeSection" class="section active">
+            <!-- Price Card -->
+            <div class="card price-card">
+                <div class="card-header">
+                    <h2>TON Price</h2>
+                    <span class="material-icons">show_chart</span>
+                </div>
+                <div class="card-content">
+                    <div class="price-info">
+                        <span id="tonPrice">$0.00</span>
+                        <span id="priceChange" class="price-change">0.00%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stake Card -->
+            <div class="card stake-card">
+                <div class="card-header">
+                    <h2>Your Stake</h2>
+                    <span class="material-icons">account_balance</span>
+                </div>
+                <div class="card-content">
+                    <div class="stake-info">
+                        <span id="currentStake">0.00</span> TON
+                        <span id="stakeRate">0.00% daily</span>
+                    </div>
+                    <button class="stake-btn">
+                        <span class="material-icons">add</span>
+                        Stake More
+                    </button>
+                </div>
+            </div>
+
+            <!-- Earnings Card -->
+            <div class="card earnings-card">
+                <div class="card-header">
+                    <h2>Earnings</h2>
+                    <span class="material-icons">payments</span>
+                </div>
+                <div class="card-content">
+                    <div class="earnings-info">
+                        <div class="total-earned">
+                            <span>Total Earned</span>
+                            <span id="totalEarned">0.00</span> TON
+                        </div>
+                        <div class="next-reward">
+                            <span>Next Reward</span>
+                            <span id="nextReward">0.00</span> TON
+                        </div>
+                        <div class="reward-timer">
+                            <div class="progress-bar">
+                                <div id="rewardProgress" class="progress"></div>
+                            </div>
+                            <span id="timeToReward">0h 0m</span> until next reward
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Tabs -->
+            <div class="stats-tabs">
+                <button class="tab active">Overview</button>
+                <button class="tab">Analytics</button>
+                <button class="tab">History</button>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span>APY</span>
+                    <span id="apyValue">0.00%</span>
+                </div>
+                <div class="stat-card">
+                    <span>Total Staked</span>
+                    <span id="totalStaked">0.00</span> TON
+                </div>
+                <div class="stat-card">
+                    <span>Validators</span>
+                    <span id="validatorCount">0</span>
+                </div>
+                <div class="stat-card">
+                    <span>Network Share</span>
+                    <span id="networkShare">0.00%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Network Section (Updated with Referrals) -->
+        <div id="networkSection" class="section">
+            <!-- Referrals Overview -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>Your Referral Stats</h2>
+                    <span class="material-icons">group</span>
+                </div>
+                <div class="card-content">
+                    <div class="network-stats">
+                        <div class="network-stat-card">
+                            <span class="material-icons">people</span>
+                            <div class="network-stat-info">
+                                <label>Total Referrals</label>
+                                <span id="totalReferrals">0</span>
+                            </div>
+                        </div>
+                        <div class="network-stat-card">
+                            <span class="material-icons">payments</span>
+                            <div class="network-stat-info">
+                                <label>Total Earnings</label>
+                                <span id="referralEarnings">0.00 TON</span>
+                            </div>
+                        </div>
+                        <div class="network-stat-card">
+                            <span class="material-icons">trending_up</span>
+                            <div class="network-stat-info">
+                                <label>Referral Rate</label>
+                                <span id="referralRate">5%</span>
+                            </div>
+                        </div>
+                        <div class="network-stat-card">
+                            <span class="material-icons">stars</span>
+                            <div class="network-stat-info">
+                                <label>Network Level</label>
+                                <span id="networkLevel">1</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Referral Link -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>Your Referral Link</h2>
+                    <button id="copyLink" class="icon-btn">
+                        <span class="material-icons">content_copy</span>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <div class="referral-link-container">
+                        <input type="text" id="referralLink" readonly value="https://t.me/TonVaultBot?start=ref123" />
+                        <button class="share-btn">
+                            <span class="material-icons">share</span>
+                            Share
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Referral History -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>Recent Referrals</h2>
+                </div>
+                <div class="card-content">
+                    <div id="referralHistory" class="referral-list">
+                        <!-- Referral items will be added here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Your Referrer -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>Your Referrer</h2>
+                    <span class="material-icons">person</span>
+                </div>
+                <div class="card-content">
+                    <div id="referrerDetails" class="referrer-info">
+                        <!-- Referrer details will be added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rank Section (Updated) -->
+        <div id="rankSection" class="section">
+            <!-- Rankings Header -->
+            <div class="rank-header">
+                <h2>Top Stakers</h2>
+                <div class="rank-filters">
+                    <button class="filter-btn active">All Time</button>
+                    <button class="filter-btn">Monthly</button>
+                    <button class="filter-btn">Weekly</button>
+                </div>
+            </div>
+
+            <!-- Rankings List -->
+            <div class="rank-list">
+                <!-- Ranking items will be added here dynamically -->
+            </div>
+        </div>
+
+        <!-- News Section -->
+        <div id="newsSection" class="section">
+            <!-- Global Stats -->
+            <div class="stats-row">
+                <div class="stat-item">
+                    <span class="material-icons">group</span>
+                    <div class="stat-info">
+                        <span>Total Users</span>
+                        <span id="totalUsers">0</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <span class="material-icons">account_balance</span>
+                    <div class="stat-info">
+                        <span>Total Staked</span>
+                        <span id="totalStakedGlobal">0.00 TON</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Events List -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>Upcoming Events</h2>
+                    <span class="material-icons">event</span>
+                </div>
+                <div class="card-content">
+                    <div id="eventsList" class="events-list">
+                        <!-- Event items will be added here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Community Links -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>Join Our Community</h2>
+                    <span class="material-icons">groups</span>
+                </div>
+                <div class="card-content">
+                    <div class="social-links">
+                        <a href="#" class="social-link telegram">
+                            <span class="material-icons">telegram</span>
+                            <span>Telegram</span>
+                        </a>
+                        <a href="#" class="social-link whatsapp">
+                            <span class="material-icons">whatsapp</span>
+                            <span>WhatsApp</span>
+                        </a>
+                        <a href="#" class="social-link youtube">
+                            <span class="material-icons">youtube</span>
+                            <span>YouTube</span>
+                        </a>
+                        <a href="#" class="social-link twitter">
+                            <span class="material-icons">x</span>
+                            <span>X (Twitter)</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-section="homeSection">
+                <span class="material-icons">home</span>
+                Home
+            </button>
+            <button class="nav-item" data-section="networkSection">
+                <span class="material-icons">hub</span>
+                Network
+            </button>
+            <button class="nav-item" data-section="rankSection">
+                <span class="material-icons">leaderboard</span>
+                Rank
+            </button>
+            <button class="nav-item" data-section="newsSection">
+                <span class="material-icons">newspaper</span>
+                News
+            </button>
+        </nav>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html> 
