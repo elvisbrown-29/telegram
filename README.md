@@ -105,7 +105,17 @@ npm run dev
 
 ## Environment Variables
 
-- `BOT_TOKEN`: Telegram bot token (required)
+### Vercel Deployment
+Only one environment variable is needed in your Vercel project settings:
+
+- `BOT_TOKEN`: Your Telegram bot token (required)
+  - Get this from [@BotFather](https://t.me/BotFather)
+  - Used for validating Telegram WebApp data
+  - Keep this secret and never commit it to the repository
+
+No other environment variables are required as:
+- CoinGecko API is used without authentication
+- All other functionality is handled through the Telegram bot
 
 ## Browser Support
 
