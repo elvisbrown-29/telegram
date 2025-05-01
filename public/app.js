@@ -19,7 +19,7 @@ console.log('Telegram WebApp initialized:', {
 });
 
 // Constants
-const API_ENDPOINT = 'https://telegram-ten-jade.vercel.app/api';
+const API_ENDPOINT = 'https://telegram-six-blush.vercel.app/api';
 const REFRESH_INTERVAL = 30000; // 30 seconds
 const PRICE_REFRESH_INTERVAL = 10000; // 10 seconds
 const TON_DECIMALS = 9;
