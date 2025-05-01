@@ -1,29 +1,71 @@
-# TON Staking Bot
+# TON Vault - Telegram Staking Bot Web Interface
 
-A Telegram bot for staking TON tokens with referral system and daily rewards.
+A modern web interface for the TON Vault staking bot, built with vanilla JavaScript and deployed on Vercel.
 
 ## Features
 
-- 🔐 Secure TON token staking
-- 💰 Daily rewards distribution
-- 👥 Multi-level referral system
-- 📊 Real-time balance tracking
-- 🔄 Automatic rewards calculation
-- 👨‍💼 Admin panel for management
+### Price Tracking
+- Real-time TON price updates from CoinGecko
+- Price change percentage display
+- Animated price updates
 
-## Prerequisites
+### Staking Management
+- Current stake display
+- Daily reward rate
+- Total earned tracking
+- Next reward countdown
+- APY display
+- Stake more functionality
 
-- Node.js v16 or higher
-- MongoDB
-- Telegram Bot Token (from [@BotFather](https://t.me/BotFather))
-- TON wallet for handling transactions
+### Network Statistics
+- Total staked TON
+- Validator count
+- Network share percentage
+- Mainnet status indicator
 
-## Installation
+### Referral System
+- Total referrals tracking
+- Referral earnings display
+- Referral link sharing
+- Referral history with timestamps
+- Network level progression
+
+### User Interface
+- Dark theme optimized for Telegram
+- Responsive design for mobile devices
+- Material Icons integration
+- Animated transitions
+- Real-time data updates
+
+## Project Structure
+
+```
+/
+├── api/                # Serverless API functions
+│   ├── price.ts       # TON price endpoint
+│   └── user/          # User-related endpoints
+├── public/            # Static web files
+│   ├── index.html    # Main HTML file
+│   ├── styles.css    # Stylesheet
+│   ├── app.js        # Application logic
+│   └── assets/       # Images and icons
+└── vercel.json       # Vercel deployment config
+```
+
+## Technology Stack
+
+- Frontend: Vanilla JavaScript
+- API: Vercel Serverless Functions
+- Price Data: CoinGecko API
+- Hosting: Vercel
+- Blockchain: TON (The Open Network)
+
+## Setup
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/ton-staking-bot.git
-cd ton-staking-bot
+git clone [repository-url]
+cd ton-vault
 ```
 
 2. Install dependencies:
@@ -31,65 +73,59 @@ cd ton-staking-bot
 npm install
 ```
 
-3. Copy the environment file and fill in your values:
-```bash
-cp .env.example .env
+3. Set up environment variables:
+Create a `.env` file with:
+```
+BOT_TOKEN=your_telegram_bot_token
 ```
 
-4. Configure your environment variables in `.env`:
-```
-BOT_TOKEN=your_bot_token_here
-MONGODB_URI=your_mongodb_uri_here
-TON_NETWORK=mainnet
-TON_ENDPOINT=https://toncenter.com/api/v2/jsonRPC
-MIN_STAKE_AMOUNT=100
-MAX_STAKE_AMOUNT=10000
-DAILY_REWARD_RATE=2
-LOCK_PERIOD_DAYS=7
-ADMIN_TELEGRAM_ID=your_telegram_id_here
-JWT_SECRET=your_jwt_secret_here
-```
-
-## Development
-
-Start the bot in development mode:
+4. Run locally:
 ```bash
 npm run dev
 ```
 
-## Production
+## Deployment
 
-Build and start the bot in production:
-```bash
-npm run build
-npm start
-```
+1. Push to GitHub
+2. Connect to Vercel
+3. Add environment variables in Vercel dashboard
+4. Deploy
 
-## Commands
+## API Endpoints
 
-- `/start` - Start the bot and get your referral link
-- `/stake` - Stake TON tokens
-- `/withdraw` - Withdraw tokens and rewards
-- `/balance` - Check your current balance and rewards
-- `/referral` - View your referral statistics
-- `/help` - Show help information
+### GET /api/price
+- Returns current TON price and 24h change
+- No authentication required
+- Data from CoinGecko
+
+### GET /api/user/[id]
+- Returns user data and staking information
+- Requires Telegram WebApp authentication
+- Protected endpoint
+
+## Environment Variables
+
+- `BOT_TOKEN`: Telegram bot token (required)
+
+## Browser Support
+
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Mobile browsers
 
 ## Contributing
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License
 
-## Security
+## Contact
 
-If you discover any security-related issues, please email security@yourdomain.com instead of using the issue tracker.
-
-## Support
-
-For support, please join our [Telegram group](https://t.me/your_support_group) or create an issue in the repository. 
+For support or inquiries, contact through the Telegram bot. 
