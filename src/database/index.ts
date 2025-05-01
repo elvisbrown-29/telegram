@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm';
-import { User } from '../models/User';
-import { Transaction } from '../models/Transaction';
-import { RewardHistory } from '../models/RewardHistory';
+import { User } from '../entities/User';
+import { Transaction } from '../entities/Transaction';
+import { RewardHistory } from '../entities/RewardHistory';
 import { Settings } from '../entities/Settings';
 import { logger } from '../utils/logger';
 import { config } from 'dotenv';
@@ -17,8 +17,8 @@ export const AppDataSource = new DataSource({
     username: process.env.DB_USERNAME || 'root',
     password: process.env.DB_PASSWORD || '',
     database: process.env.DB_NAME || 'ton_staking_bot',
-    synchronize: process.env.NODE_ENV === 'development',
-    logging: process.env.NODE_ENV === 'development',
+    synchronize: true, // Force synchronize in all environments for now
+    logging: true, // Enable logging to see what's happening
     entities: [User, Transaction, RewardHistory, Settings],
     migrations: [],
     subscribers: [],
