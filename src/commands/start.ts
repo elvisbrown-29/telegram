@@ -6,7 +6,7 @@ import { logger } from '../utils/logger';
 
 // Get webapp URL based on environment
 const getWebappUrl = () => {
-  return 'https://tg-nine-orcin.vercel.app';
+  return 'https://telegram-six-blush.vercel.app';
 };
 
 export const startCommand = async (ctx: Context): Promise<void> => {
