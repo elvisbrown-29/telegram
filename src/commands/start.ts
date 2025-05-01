@@ -1,6 +1,6 @@
 import { Context } from 'telegraf';
 import { AppDataSource } from '../database';
-import { User } from '../models/User';
+import { User } from '../entities/User';
 import { generateReferralCode } from '../utils/referral';
 import { logger } from '../utils/logger';
 
